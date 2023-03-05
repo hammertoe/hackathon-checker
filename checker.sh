@@ -11,7 +11,7 @@ repo_name=$(basename "$1" .git)
 # check if the repository directory exists
 if [ ! -d "$repo_name" ]; then
   # clone the repository if it doesn't exist
-  git clone "$1"
+  git clone --recurse-submodules -j8 "$1"
 fi
 
 # navigate to the repository directory
