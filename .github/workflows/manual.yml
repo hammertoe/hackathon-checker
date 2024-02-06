@@ -29,5 +29,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      repository: ${{ inputs.repo }}
+      with:
+        repository: ${{ inputs.repo }}
 
