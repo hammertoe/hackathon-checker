@@ -1,0 +1,12 @@
+{
+  "name": "hackathon-checker",
+  "version": "1.0.0",
+  "description": "This is a simple script to check some basic things for a FVM hackathon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
