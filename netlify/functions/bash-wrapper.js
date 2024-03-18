@@ -5,7 +5,7 @@ const path = require('path');
 exports.handler = async (event, context) => {
   return new Promise((resolve, reject) => {
     // Adjust the path to your script
-    const scriptPath = path.join(__dirname, '..', 'script.sh');
+    const scriptPath = path.join(__dirname, '..', '..', 'script.sh');
     
     exec(`bash ${scriptPath}`, (error, stdout, stderr) => {
       if (error) {
