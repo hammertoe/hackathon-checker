@@ -2,29 +2,82 @@
 
 if [ $# -eq 0 ]; then
   echo "Usage: $0 [github repository]"
-  exit 1
+  exit 0
 fi
 
-# extract the repository name from the url
+# Start with empty list of tags
+tags=""
+
+# Extract the repository name from the url
 repo_name=$(basename "$1" .git)
 
-# check if the repository directory exists
-if [ ! -d "$repo_name" ]; then
-  # clone the repository if it doesn't exist
-  git clone --recurse-submodules -j8 "$1"
+# Make the temp directory to work in
+tempprefix=$(basename $0)
+tempdir=$(mktemp -d -q)
+#tempdir=$(mktemp -d -q /tmp/"${tempprefix}".XXXXXX)
+
+# Clone the git repo
+cd "$tempdir"
+curl -LkSs "${1}/archive/refs/heads/main.tar.gz"  | tar -xzf -
+
+# Check over the files and look for interesting aspects
+cd "${repo_name}-main"
+
+# Find all files, excluding node_modules
+all_files=$(find . \( -type d -name "node_modules" -prune \) -o -type f -print)
+
+# Find all Solidity files
+sol_files=$(echo "$all_files" | egrep "\.sol$")
+if [ -n "$sol_files" ]; then
+  tags="${tags} solidity"
 fi
 
-# navigate to the repository directory
-cd "$repo_name"
+# Find all JS files
+js_files=$(echo "$all_files" | egrep "\.(js|ts)$")
+if [ -n "$js_files" ]; then
+  tags="${tags} javascript"
+fi
 
-git pull
+# Find all Hardhat config files
+hh_files=$(echo "$js_files" | grep "hardhat.config.")
+if [ -n "$hh_files" ]; then
+  tags="${tags} hardhat"
+fi
 
-echo "Solidity files found:"
-find . -type f -name "*.sol"
+# Search for usage of the filecoin solidity library
+fs_usage=$(echo "$sol_files" | tr '\n' '\0' | xargs -P0 -0 -I {} grep 'import.*\(MarketAPI\|DataCapAPI\|MinerAPI\|SendAPI\|VerifRegAPI\|PowerAPI\)' "{}")
+if [ -n "$fs_usage" ]; then
+  tags="${tags} filecoin-sol"
+fi
 
-echo "Files that use the Solidity APIs:"
-grep -r 'import.*\(MarketAPI\|DataCapAPI\|MinerAPI\|SendAPI\|VerifRegAPI\|PowerAPI\)'
+# Search for usage of the hyperspace endpoint
+hs_usage=$(echo "$js_files" | tr '\n' '\0' | xargs -P0 -0 -I {} grep '\(https://filecoin-hyperspace.chainstacklabs.com/rpc/v1\|https://api.hyperspace.node.glif.io/rpc/v1\)' "{}")
+if [ -n "$hs_usage" ]; then
+  tags="${tags} hyperspace"
+fi
 
-echo "Occurances of hyperspace RPC endpoint:"
-grep -r '\(https://filecoin-hyperspace.chainstacklabs.com/rpc/v1\|https://api.hyperspace.node.glif.io/rpc/v1\)'
+# Search for usage of the calibration endpoint
+cal_usage=$(echo "$js_files" | tr '\n' '\0' | xargs -P0 -0 -I {} grep '\(https://api.calibration.node.glif.io/rpc/v1\|https://filecoin-calibration.chainup.net/rpc/v1\|https://rpc.ankr.com/filecoin_testnet\|https://calibration.filfox.info/rpc/v1\)' "{}")
+if [ -n "$cal_usage" ]; then
+  tags="${tags} calibration"
+fi
 
+# Search for usage of Lighthouse
+lh_usage=$(echo "$js_files" | tr '\n' '\0' | xargs -P0 -0 -I {} grep 'lighthouse-web3/sdk' "{}")
+if [ -n "$lh_usage" ]; then
+  tags="${tags} lighthouse"
+fi
+
+# Search for usage of Web3 Storage
+w3_usage=$(echo "$js_files" | tr '\n' '\0' | xargs -P0 -0 -I {} grep 'import.*\(web3-storage/w3up-client\|web3.storage\)' "{}")
+if [ -n "$w3_usage" ]; then
+  tags="${tags} web3storage"
+fi
+
+# Search for usage of NFT Storage
+nft_usage=$(echo "$js_files" | tr '\n' '\0' | xargs -P0 -0 -I {} grep 'import.*\(nft.storage\)' "{}")
+if [ -n "$nft_usage" ]; then
+  tags="${tags} nftstorage"
+fi
+# Print out final list of tags
+echo ${tags}
