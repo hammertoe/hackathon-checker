@@ -20,6 +20,7 @@ tempdir=$(mktemp -d -q)
 echo "fetching repo"
 # Clone the git repo
 cd "$tempdir"
+echo "fetching: ${1}/archive/refs/heads/main.tar.gz"
 curl -LkSs "${1}/archive/refs/heads/main.tar.gz"  | tar -xzf -
 
 # Check over the files and look for interesting aspects
