@@ -21,7 +21,35 @@ echo "fetching repo"
 # Clone the git repo
 cd "$tempdir"
 echo "fetching: ${1}/archive/refs/heads/main.tar.gz"
-curl -LkSs "${1}/archive/refs/heads/main.tar.gz"  | tar -xzf -
+
+
+# Define a temporary file for the archive.
+temp_archive=$(mktemp)
+
+# Fetch the URL. If curl fails, report the error and exit.
+if ! curl -LkSs -o "${temp_archive}" "${1}/archive/refs/heads/main.tar.gz"; then
+    echo "Error: Failed to fetch the URL." >&2
+    rm -f "${temp_archive}"  # Clean up temporary file
+    exit 1
+fi
+
+# Unpack the archive. If tar fails, report the error and exit.
+if ! tar -xzf "${temp_archive}"; then
+    echo "Error: Failed to unpack the archive." >&2
+    rm -f "${temp_archive}"  # Clean up temporary file
+    exit 1
+fi
+
+#curl -LkSs "${1}/archive/refs/heads/main.tar.gz"  | tar -xzf -
+## ${PIPESTATUS[0]} contains the exit status of the 'curl' command.
+## ${PIPESTATUS[1]} contains the exit status of the 'tar' command.
+#if [ "${PIPESTATUS[0]}" != "0" ]; then
+#    echo "Error: Failed to fetch the URL." >&2
+#    exit 1
+#elif [ "${PIPESTATUS[1]}" != "0" ]; then
+#    echo "Error: Failed to unpack the archive." >&2
+#    exit 1
+#fi
 
 # Check over the files and look for interesting aspects
 cd "${repo_name}-main"
