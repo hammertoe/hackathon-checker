@@ -26,6 +26,7 @@ curl -LkSs "${1}/archive/refs/heads/main.tar.gz"  | tar -xzf -
 cd "${repo_name}-main"
 echo "changing dir"
 pwd
+ls
 
 echo "starting check"
 # Find all files, excluding node_modules
