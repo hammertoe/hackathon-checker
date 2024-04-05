@@ -11,18 +11,23 @@ tags=""
 # Extract the repository name from the url
 repo_name=$(basename "$1" .git)
 
+echo "making temp dir"
 # Make the temp directory to work in
 tempprefix=$(basename $0)
 tempdir=$(mktemp -d -q)
 #tempdir=$(mktemp -d -q /tmp/"${tempprefix}".XXXXXX)
 
+echo "fetching repo"
 # Clone the git repo
 cd "$tempdir"
 curl -LkSs "${1}/archive/refs/heads/main.tar.gz"  | tar -xzf -
 
 # Check over the files and look for interesting aspects
 cd "${repo_name}-main"
+echo "changing dir"
+pwd
 
+echo "starting check"
 # Find all files, excluding node_modules
 all_files=$(find . \( -type d -name "node_modules" -prune \) -o -type f -print)
 
