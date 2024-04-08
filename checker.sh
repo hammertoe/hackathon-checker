@@ -7,6 +7,9 @@ ls /usr/bin
 ls /bin
 ls /usr/sbin
 ls /sbin
+ls /var/lang/bin
+ls /usr/local/bin
+ls /opt/bin
 
 
 exit
