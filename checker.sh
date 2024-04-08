@@ -1,9 +1,12 @@
 #!/bin/bash
 
+echo $PATH
+which git
 ls /usr/bin
 ls /bin
 ls /usr/sbin
 ls /sbin
+
 
 exit
 
