@@ -1,5 +1,6 @@
 #!/bin/bash
 
+uname -a
 echo $PATH
 which git
 ls /usr/bin
