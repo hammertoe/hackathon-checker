@@ -1,5 +1,10 @@
 #!/bin/bash
 
+ls /usr/bin
+ls /bin
+ls /usr/sbin
+ls /sbin
+
 if [ $# -eq 0 ]; then
   echo "Usage: $0 [github repository]"
   exit 0
