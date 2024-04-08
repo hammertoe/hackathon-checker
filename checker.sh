@@ -5,6 +5,8 @@ ls /bin
 ls /usr/sbin
 ls /sbin
 
+exit
+
 if [ $# -eq 0 ]; then
   echo "Usage: $0 [github repository]"
   exit 0
