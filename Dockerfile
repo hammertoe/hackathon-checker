@@ -1,15 +1,22 @@
-# Use Alpine Linux as the base image
-FROM alpine:latest
+FROM node:latest
 
-# Install any dependencies your script may need
-# For example, to install curl, uncomment the next line:
-RUN apk add --no-cache curl bash
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copy the checker.sh script into the container
-COPY checker.sh /checker.sh
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Make the script executable
-RUN chmod +x /checker.sh
+# Install app dependencies
+RUN npm install
 
-# Set the script as the entry point
-ENTRYPOINT ["/checker.sh"]
+# Bundle app source
+COPY . .
+
+# Expose port 8080
+EXPOSE 8080
+
+# Define environment variable
+ENV PORT=8080
+
+# Command to run the app
+CMD ["npm", "start"]

@@ -7,6 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Matt Hamilton",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hammertoe/hackathon-checker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hammertoe/hackathon-checker/issues"
+  },
+  "homepage": "https://github.com/hammertoe/hackathon-checker#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
