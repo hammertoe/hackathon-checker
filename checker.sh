@@ -1,17 +1,5 @@
 #!/bin/bash
 
-uname -a
-echo $PATH
-ls /usr/bin
-ls /bin
-ls /usr/sbin
-ls /sbin
-ls /var/lang/bin
-ls /usr/local/bin
-
-
-exit
-
 if [ $# -eq 0 ]; then
   echo "Usage: $0 [github repository]"
   exit 0
@@ -23,16 +11,16 @@ tags=""
 # Extract the repository name from the url
 repo_name=$(basename "$1" .git)
 
-echo "making temp dir"
+#echo "making temp dir"
 # Make the temp directory to work in
 tempprefix=$(basename $0)
 tempdir=$(mktemp -d -q)
 #tempdir=$(mktemp -d -q /tmp/"${tempprefix}".XXXXXX)
 
-echo "fetching repo"
+#echo "fetching repo"
 # Clone the git repo
 cd "$tempdir"
-echo "fetching: ${1}/archive/refs/heads/main.tar.gz"
+#echo "fetching: ${1}/archive/refs/heads/main.tar.gz"
 
 
 # Define a temporary file for the archive.
@@ -65,11 +53,11 @@ fi
 
 # Check over the files and look for interesting aspects
 cd "${repo_name}-main"
-echo "changing dir"
-pwd
-ls
+#echo "changing dir"
+#pwd
+#ls
 
-echo "starting check"
+#echo "starting check"
 # Find all files, excluding node_modules
 all_files=$(find . \( -type d -name "node_modules" -prune \) -o -type f -print)
 
