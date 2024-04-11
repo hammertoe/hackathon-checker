@@ -1,5 +1,0 @@
-[build]
-  functions = "netlify/functions"
-
-[functions]
-  included_files = ["checker.sh"]  
