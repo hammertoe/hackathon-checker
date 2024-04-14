@@ -9,7 +9,8 @@ To run it:
 
 e.g.
 
-```% sh checker.sh https://github.com/sandrotbilisi/decademic
+```
+% sh checker.sh https://github.com/sandrotbilisi/decademic
 filecoin ipfs javascript solidity web3storage
 ```
 
@@ -69,6 +70,7 @@ the entire codebase locally. It starts and scales up on demand, so first run may
 
 e.g.
 
-```% curl "https://hackathon-checker.1fj4a2y44fxx.us-east.codeengine.appdomain.cloud/checker?format=csv&url=https://github.com/peeranha/peeranha"
+```
+% curl "https://hackathon-checker.1fj4a2y44fxx.us-east.codeengine.appdomain.cloud/checker?format=csv&url=https://github.com/peeranha/peeranha"
 hardhat,javascript,solidity
 ```
