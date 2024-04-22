@@ -66,7 +66,7 @@ if [ -n "$sol_files" ]; then
 fi
 
 # Find all JS files
-js_files=$(echo "$all_files" | egrep "\.(js|ts)$")
+js_files=$(echo "$all_files" | egrep "\.(js|ts|jsx|tsx)$")
 if [ -n "$js_files" ]; then
     tags="${tags} javascript"
     if [[ "$verbose" -eq 1 ]]; then
@@ -137,7 +137,7 @@ if [ -n "$lh_usage" ]; then
 	echo
 	echo "*********************"
 	echo "usage of Lighthouse:"
-	echo "$ls_usage"
+	echo "$lh_usage"
     fi
 fi
 
